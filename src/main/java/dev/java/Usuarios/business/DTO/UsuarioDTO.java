@@ -28,4 +28,6 @@ public class UsuarioDTO {
 
     private LocalDateTime dateTime;
 
+    private String codigoAdmin;
+
 }

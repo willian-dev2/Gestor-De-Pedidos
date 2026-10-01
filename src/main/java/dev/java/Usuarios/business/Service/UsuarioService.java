@@ -3,6 +3,7 @@ package dev.java.Usuarios.business.Service;
 import dev.java.Usuarios.Infrastructure.Exceptions.ConflictException;
 import dev.java.Usuarios.Infrastructure.Entity.UsuarioEntity;
 import dev.java.Usuarios.Infrastructure.Exceptions.ResourceNotFoundException;
+import dev.java.Usuarios.Infrastructure.enums.Role;
 import dev.java.Usuarios.Infrastructure.repository.UsuarioRepository;
 import dev.java.Usuarios.Infrastructure.security.JwtUtil;
 import dev.java.Usuarios.business.Converter.UsuarioConverter;
@@ -26,6 +27,13 @@ public class UsuarioService {
         emailExist(usuarioDTO.getEmail());
         // criptografia da nossa senha através do passwordEnconder
         usuarioDTO.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
+
+        // regra para defenir role
+        if (usuarioDTO.getCodigoAdmin() != null && usuarioDTO.getCodigoAdmin().equals("15092004")) {
+            usuarioDTO.setRole(Role.ADMIN);
+        } else {
+            usuarioDTO.setRole(Role.CUSTOMER);
+        }
         // Faz a conversão DTO para a entity
         UsuarioEntity usuario = usuarioConverter.paraUsuario(usuarioDTO);
         // salva usuario o objeto entity no banco de dados e devolve para o usuario o DTO
